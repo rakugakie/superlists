@@ -25,14 +25,30 @@ class NewVisitorTest(unittest.TestCase):
         self.fail('Finish the test')
 
         #She enters a to-do Item Straight Away
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertEqual(
+            inputbox.get_attribute('placeholder'), 'Enter a to-do item'
+        )
 
         #She types "Buy peacock feathers" into a text box
-
+        inputbox.send_keys('Buy peacock feathers')
+        
         #When she hits enter, the page updates, and now the page lists
         #"!: Buy peacock feathers" As an Item in a to=do list
+        inputbox.send_keys(Keys.ENTER)
+        time.sleep(1)
 
+        #returns element
+        table = self.browser.find_element_by_id('id_list_table')
+        #returns list of elements
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertTrue(
+            any(row.text == '1: Buy peacock feathers' for row in rows)
+        )
+        
         #There is still a text box to add another item.  She adds "Make fly"
-
+        self.fail('Finish the Test!')
+        
         #The page updates again, and shows both items.
 
         #Edith wonders whether the site will remember he list.
