@@ -1,4 +1,6 @@
 from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import time
 import unittest
 
 class NewVisitorTest(unittest.TestCase):
@@ -20,9 +22,6 @@ class NewVisitorTest(unittest.TestCase):
 
         #She notices the page title and header mention to-do lists
         self.assertIn('To-Do', self.browser.title)
-        
-        #Fails the test automatically
-        self.fail('Finish the test')
 
         #She enters a to-do Item Straight Away
         inputbox = self.browser.find_element_by_id('id_new_item')
@@ -43,7 +42,8 @@ class NewVisitorTest(unittest.TestCase):
         #returns list of elements
         rows = table.find_elements_by_tag_name('tr')
         self.assertTrue(
-            any(row.text == '1: Buy peacock feathers' for row in rows)
+            any(row.text == '1: Buy peacock feathers' for row in rows),
+            "New to-do item did not appear in table"
         )
         
         #There is still a text box to add another item.  She adds "Make fly"
