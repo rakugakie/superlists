@@ -7,7 +7,7 @@ from lists.views import home_page
 
 class HomePageTest(TestCase):
 
-    def test_displays_all_lsit_items(self):
+    def test_displays_all_list_items(self):
         Item.objects.create(text='itemy 1')
         Item.objects.create(text='itemy 2')
 
