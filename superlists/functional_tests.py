@@ -1,9 +1,11 @@
+from django.test import LiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+
 import time
 import unittest
 
-class NewVisitorTest(unittest.TestCase):
+class NewVisitorTest(LiveServerTestCase):
     #Special method that happends before test are run
     def setUp(self):
         self.browser = webdriver.Firefox()
@@ -13,17 +15,18 @@ class NewVisitorTest(unittest.TestCase):
     def tearDown(self):
         self.browser.quit()
 
-    def check_for_row_in_list_table(self, row_text):
-        table = self.browser.find_element_by_id('id_list_table')
-        rows = table.find_elements_by_tag_name('tr')
-        self.assertIn(row_text, [row.text for row in rows])
+    #def check_for_row_in_list_table(self, row_text):
+    #    table = self.browser.find_element_by_id('id_list_table')
+    #    rows = table.find_elements_by_tag_name('tr')
+    #    self.assertIn(row_text, [row.text for row in rows])
 
     #Any method whos name starts with test is a test method
     #and will be run by the test runner.
+        
     def test_can_start_a_list_and_retrieve_it_later(self):
 
         #Edith goes to new online to-do app
-        self.browser.get('http://localhost:8000')
+        self.browser.get(self.live_server_url)
 
         #She notices the page title and header mention to-do lists
         self.assertIn('To-Do', self.browser.title)
@@ -64,6 +67,4 @@ class NewVisitorTest(unittest.TestCase):
         #Satisfied, she goes back to sleep
 
 
-if __name__== '__main__':
-    unittest.main(warnings='ignore')
 
