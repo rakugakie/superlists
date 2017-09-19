@@ -67,7 +67,6 @@ class NewVisitorTest(LiveServerTestCase):
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Use peacock feathers to make a fly')
         inputbox.send_keys(Keys.ENTER)
-        time.sleep(1)
         
         self.wait_for_row_in_list_table('2: Use peacock feathers to make a fly')
         self.wait_for_row_in_list_table('1: Buy peacock feathers')
@@ -85,15 +84,17 @@ class NewVisitorTest(LiveServerTestCase):
         edith_list_url = self.browser.current_url
         self.assertRegex(edith_list_url, '/lists/.+')
 
+        self.browser.quit()
         #Now a new user, Francis, comes along to the site.
         #Francis visits the homepage.  No sign of Edith's list
         ##We use a new browser sesssion to make sure no information
         ###from Edith's list is coming through from cookies ect
 
-        self.browser.quit()
-        self.browser = webdriver.Firefox()
 
+        self.browser = webdriver.Firefox()
+        self.browser.get(self.live_server_url)
         #He mumbles something about cows and starts his list
+
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Buy milk')
         inputbox.send_keys(Keys.ENTER)
