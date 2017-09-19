@@ -5,31 +5,15 @@ from lists.models import Item
 
 from lists.views import home_page
 
+
 class HomePageTest(TestCase):
 
     def test_uses_home_template(self):
-        #Manually call client.get and pass url we want to test
+
+        # Manually call client.get and pass url we want to test
         response = self.client.get('/')
-
-        #Django test class.
         self.assertTemplateUsed(response, 'home.html')
-        
-    def test_can_save_a_POST_request(self):
-        self.client.post('/', data={'item_text': 'A new list item'})
 
-        self.assertEqual(Item.objects.count(), 1)
-        new_item = Item.objects.first()
-        self.assertEqual(new_item.text, 'A new list item')
-
-    def test_redirects_after_POST(self):     
-        response = self.client.post('/', data={'item_text': 'A new list item'})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['location'], '/lists/the-only-list-in-the-world/')
-        
-    def test_only_saves_items_when_necessary(self):
-        
-        self.client.get('/')
-        self.assertEqual(Item.objects.count(),0)
 
 class ItemModelTest(TestCase):
 
@@ -43,11 +27,12 @@ class ItemModelTest(TestCase):
         second_item.save()
 
         saved_items = Item.objects.all()
-        self.assertEqual(saved_items.count(),2)
+        self.assertEqual(saved_items.count(), 2)
         first_saved_item = saved_items[0]
         second_saved_item = saved_items[1]
         self.assertEqual(first_saved_item.text, first_item.text)
         self.assertEqual(second_saved_item.text, second_item.text)
+
 
 class ListViewTest(TestCase):
 
@@ -64,6 +49,21 @@ class ListViewTest(TestCase):
         response = self.client.get('/lists/the-only-list-in-the-world/')
         self.assertTemplateUsed(response, 'list.html')
 
-                                
-        
+
+class NewListTest(TestCase):
+
+    def test_can_save_a_POST_request(self):
+        # Post first list item
+        self.client.post('/lists/new', data={'item_text': 'A new list item'})
+        # Asserts there is but one item
+        self.assertEqual(Item.objects.count(), 1)
+        new_item = Item.objects.first()
+        self.assertEqual(new_item.text, 'A new list item')
+
+    def test_redirects_after_POST(self):
+        response = self.client.post('/lists/new', data={'item_text': 'A new list item'})
+        # Assertion takes response, expected_url, status code (Default 302),
+        # Target status code (default 200), mesage prefix,
+        self.assertRedirects(response, '/lists/the-only-list-in-the-world/')
+
 

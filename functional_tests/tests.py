@@ -43,27 +43,27 @@ class NewVisitorTest(LiveServerTestCase):
 
     def test_can_start_a_list_for_one_user(self):
 
-        #Edith goes to new online to-do app
+        # Edith goes to new online to-do app
         self.browser.get(self.live_server_url)
 
-        #She notices the page title and header mention to-do lists
+        # She notices the page title and header mention to-do lists
         self.assertIn('To-Do', self.browser.title)
 
-        #She enters a to-do Item Straight Away
+        # She enters a to-do Item Straight Away
         inputbox = self.browser.find_element_by_id('id_new_item')
         self.assertEqual(
             inputbox.get_attribute('placeholder'), 'Enter a to-do item'
         )
 
-        #She types "Buy peacock feathers" into a text box
+        # She types "Buy peacock feathers" into a text box
         inputbox.send_keys('Buy peacock feathers')
         
-        #When she hits enter, the page updates, and now the page lists
-        #"!: Buy peacock feathers" As an Item in a to=do list
+        # When she hits enter, the page updates, and now the page lists
+        # "!: Buy peacock feathers" As an Item in a to=do list
         inputbox.send_keys(Keys.ENTER)
         self.wait_for_row_in_list_table('1: Buy peacock feathers')
 
-        #There is still a text box to add another item.  She adds "Make fly"
+        # There is still a text box to add another item.  She adds "Make fly"
         inputbox = self.browser.find_element_by_id('id_new_item')
         inputbox.send_keys('Use peacock feathers to make a fly')
         inputbox.send_keys(Keys.ENTER)
